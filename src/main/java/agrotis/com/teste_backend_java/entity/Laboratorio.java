@@ -1,10 +1,13 @@
 package agrotis.com.teste_backend_java.entity;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,6 +20,9 @@ public class Laboratorio {
 
     @Column(name = "nome", nullable = false)
     private String nome;
+
+    @OneToMany(mappedBy = "laboratorio")
+    private List<Pessoa> pessoas;
 
     public Laboratorio() {
     }

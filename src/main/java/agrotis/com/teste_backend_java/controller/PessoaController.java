@@ -52,11 +52,11 @@ public class PessoaController {
     @PutMapping("/atualizar/{pessoaId}")
     public ResponseEntity<Pessoa> atualizarPessoa(@PathVariable("pessoaId") Long pessoaId,
             @RequestBody @Valid AtualizarPessoaDto dto) {
-        var pessoa = pessoaService.atualizarPessoa(dto);
+        var pessoa = pessoaService.atualizarPessoa(pessoaId, dto);
         return ResponseEntity.ok(pessoa);
     }
 
-    @DeleteMapping("/{pessoaId}")
+    @DeleteMapping("/deletar/{pessoaId}")
     public ResponseEntity<Void> deletarPessoa(@PathVariable("pessoaId") Long pessoaId) {
         pessoaService.deletarPessoa(pessoaId);
         return ResponseEntity.noContent().build();

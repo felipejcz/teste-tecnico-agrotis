@@ -38,19 +38,25 @@ public class PessoaService {
         return pessoa;
     }
 
-    public Pessoa atualizarPessoa(AtualizarPessoaDto dto) {
-        var pessoaAtualizada = pessoaRepository.save(dto.toEntity());
-        if(pessoaAtualizada == null) {
-            throw new AgrotisException("Erro ao atualizar pessoa");
+    public Pessoa atualizarPessoa(Long pessoaId, AtualizarPessoaDto dto) {
+        var pessoa = pessoaRepository.findById(pessoaId).orElse(null);
+        if(pessoa == null) {
+            throw new AgrotisException("Pessoa não encontrada");
         }
-        return pessoaAtualizada;
+        pessoa.setNome(dto.nome());
+        pessoa.setDataInicial(Pessoa.convertToLocalDate(dto.dataInicial()));
+        pessoa.setDataFinal(Pessoa.convertToLocalDate(dto.dataFinal()));
+        pessoa.setObservacoes(dto.observacoes());
+        pessoa.setPropriedade(dto.propriedade().toEntity());
+        pessoa.setLaboratorio(dto.laboratorio().toEntity());
+        return pessoaRepository.save(pessoa);
     }
 
     public void deletarPessoa(Long pessoaId) {
         var pessoa = buscarPessoa(pessoaId);
         if(pessoa == null) {
-            throw new AgrotisException("Erro ao deletar pessoa");
+            throw new AgrotisException("Pessoa não encontrada");
         }
-        pessoaRepository.delete(pessoa);
+        pessoaRepository.deleteById(pessoa.getId());
     }
 }

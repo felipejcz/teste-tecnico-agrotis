@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,6 +38,7 @@ public class Pessoa {
 
     @ManyToOne
     @JoinColumn(name = "propriedade_id", nullable = false)
+    @JsonProperty("infosPropriedade")
     private Propriedade propriedade;
 
     @ManyToOne
@@ -116,6 +119,9 @@ public class Pessoa {
     }
 
     public static LocalDate convertToLocalDate(String dateString) {
+        if (dateString == null || dateString.isEmpty()) {
+            return null;
+        }
         OffsetDateTime offsetDateTime = OffsetDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME);
         return offsetDateTime.toLocalDate();
     }
